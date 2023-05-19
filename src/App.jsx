@@ -7,6 +7,7 @@ class App extends Component {
 
     this.state = {
       monsters: [],
+      searchField: "",
     };
   }
 
@@ -23,22 +24,33 @@ class App extends Component {
   }
 
   render() {
+    const filteredMonsters = this.state.monsters.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(this.state.searchField);
+    });
+
     return (
-      <>
-        <div className="App">
-          <input
-            className="search-box"
-            type="search"
-            placeholder="search monsters"
-          />
-          {this.state.monsters.map((monster) => {
-            return <h1 key={monster.id}>{monster.name}</h1>;
-          })}
-        </div>
-      </>
+      <div className="App">
+        <input
+          className="search-box"
+          type="search"
+          placeholder="search monsters"
+          onChange={(event) => {
+            console.log(event.target.value);
+
+            const searchField = event.target.value.toLocaleLowerCase();
+
+            this.setState(() => {
+              return {
+                searchField,
+              };
+            });
+          }}
+        />
+        {filteredMonsters.map((monster) => {
+          return <h3 key={monster.id}>{monster.name}</h3>;
+        })}
+      </div>
     );
   }
 }
 export default App;
-
-// https://jsonplaceholder.typicode.com/users
